@@ -1,7 +1,9 @@
 ---
 title: "Reproducible Data: Week Two Assignment"
 author: Mojave Meow
-output: html_document
+output:
+  html_document:
+    keep_md: TRUE
 ---
 
 ```{r setup, include=FALSE}
@@ -18,7 +20,7 @@ This assignment makes use of data from a personal activity monitoring device. Th
 
 Provide code for reading in the dataset and/or processing the data.
 
-```{r step one}
+```{r one}
 # attach necessary packages
 library(ggplot2)
 library(plyr)
@@ -32,7 +34,7 @@ activity<-read.csv('activity.csv',stringsAsFactors=FALSE)
 
 Generate a histogram of the total number of steps taken each day.
 
-```{r step two}
+```{r two}
 # sum intervals for each day to get total daily steps
 dailyactivity <- activity
 dailyactivity$date <- as.Date(dailyactivity$date, "%Y-%m-%d")
@@ -45,7 +47,7 @@ hist(dailyactivity$steps, main = "Histogram of Original Data", xlab = "Steps Tak
 
 Calculate the mean and median number of steps taken each day. The mean is `r format(mean(dailyactivity$steps), scientific=FALSE)`, and the median is `r median(dailyactivity$steps)`.
 
-```{r step three}
+```{r three}
 # calculate the mean and median total daily steps over the duration of the study
 mean(dailyactivity$steps)
 median(dailyactivity$steps)
@@ -55,7 +57,7 @@ median(dailyactivity$steps)
 
 Generate a time series plot of the number of steps taken per 5-minute interval averaged across all days.
 
-```{r step four}
+```{r four}
 # average days for each interval to get average interval steps
 intervalactivity <- activity
 intervalactivity <- aggregate(steps ~ interval, intervalactivity, mean)
@@ -72,7 +74,7 @@ ggplot(intervalactivity, aes(time, steps)) + geom_line() + xlab("5-Minute Interv
 
 Find the 5-minute interval that, on average, contains the maximum number of steps.The interval is `r (intervalactivity[which.max(intervalactivity$steps),] %>% mutate(interval = str_replace(interval, "(?=\\d{2}$)", ":")))$interval`, and the average number of steps is `r round(intervalactivity[which.max(intervalactivity$steps),]$steps,2)`.
 
-```{r step five}
+```{r five}
 intervalactivity[which.max(intervalactivity$steps),] %>% mutate(interval = str_replace(interval, "(?=\\d{2}$)", ":"))
 ```
 
@@ -80,7 +82,7 @@ intervalactivity[which.max(intervalactivity$steps),] %>% mutate(interval = str_r
 
 Write code to describe and show a strategy for imputing missing data. There are `r sum(is.na(activity$steps))` rows of missing data. My strategy for filling in the missing data is to use the mean for that 5-minute interval.
 
-```{r step six}
+```{r six}
 # find number of missing values
 sum(is.na(activity$steps))
 # impute data using the mean for each 5-minute interval
@@ -96,7 +98,7 @@ head(imputedactivity[which(imputedactivity$interval == 1210),])
 
 Generate a histogram of the total number of steps taken each day after missing values are imputed.
 
-```{r step seven}
+```{r seven_a}
 # sum intervals for each day to get total daily steps
 dailyimputedactivity <- imputedactivity
 dailyimputedactivity$date <- as.Date(dailyimputedactivity$date, "%Y-%m-%d")
@@ -105,7 +107,7 @@ dailyimputedactivity <- aggregate(steps ~ date, dailyimputedactivity, sum)
 
 The new mean is `r format(mean(dailyimputedactivity$steps), scientific=FALSE)`, and the new median is `r format(median(dailyimputedactivity$steps), scientific=FALSE)`. The new mean is the same as the old mean, which makes sense because missing data were replaced with averages. The new median is slightly higher than the old median and equal to the new mean. This also makes sense because there were eight days with no data that had all of their intervals replaced with the same averages.
 
-``` {r step seven part two}
+``` {r seven_b}
 # calcuate the mean and median total daily steps over the duration of the study
 mean(dailyimputedactivity$steps)
 median(dailyimputedactivity$steps)
@@ -117,7 +119,7 @@ hist(dailyimputedactivity$steps, main = "Histogram of Imputed Data", xlab = "Ste
 
 Generate a panel plot comparing the average number of steps taken per 5-minute interval across weekdays and weekends.
 
-```{r step eight}
+```{r eight}
 # convert dates to days of the week
 statusimputedactivity <- imputedactivity
 statusimputedactivity$day <- weekdays(as.POSIXct(statusimputedactivity$date))

@@ -94,7 +94,7 @@ dailyactivity <- aggregate(steps ~ date, dailyactivity, sum)
 hist(dailyactivity$steps, main = "Histogram of Original Data", xlab = "Steps Taken Per Day", col = "lightblue", ylim=c(0,40), labels=TRUE)
 ```
 
-![](ReproDataWeekTwo_files/figure-html/step two-1.png)<!-- -->
+![](ReproDataWeekTwo_files/figure-html/two-1.png)<!-- -->
 
 ### Step Three
 
@@ -136,7 +136,7 @@ intervalactivity$time <- as.POSIXct(intervalactivity$time, format = '%H:%M', tz 
 ggplot(intervalactivity, aes(time, steps)) + geom_line() + xlab("5-Minute Interval") + ylab("Average Steps Per 5-min Interval") + scale_x_datetime(date_labels = "%H:%M", date_breaks = "2 hour") + ggtitle("Average number of steps taken throughout the day")
 ```
 
-![](ReproDataWeekTwo_files/figure-html/step four-1.png)<!-- -->
+![](ReproDataWeekTwo_files/figure-html/four-1.png)<!-- -->
 
 ## Step Five
 
@@ -236,7 +236,7 @@ median(dailyimputedactivity$steps)
 hist(dailyimputedactivity$steps, main = "Histogram of Imputed Data", xlab = "Steps Taken Per Day", col = "lightblue", ylim=c(0,40), labels=TRUE)
 ```
 
-![](ReproDataWeekTwo_files/figure-html/step seven part two-1.png)<!-- -->
+![](ReproDataWeekTwo_files/figure-html/seven_b-1.png)<!-- -->
 
 ## Step Eight
 
@@ -268,7 +268,7 @@ stackedactivity$time <- as.POSIXct(stackedactivity$time, format = '%H:%M', tz = 
 ggplot(stackedactivity, aes(time,steps)) + geom_line() + facet_wrap(~status, ncol=1) + xlab("5-Minute Interval") + ylab("Average Steps Per 5-min Interval") + scale_x_datetime(date_labels = "%H:%M", date_breaks = "2 hour") + ggtitle("Average number of steps taken on weekdays and weekends")
 ```
 
-![](ReproDataWeekTwo_files/figure-html/step eight-1.png)<!-- -->
+![](ReproDataWeekTwo_files/figure-html/eight-1.png)<!-- -->
 
 ## Step Nine
 
